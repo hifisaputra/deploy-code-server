@@ -20,7 +20,15 @@ COPY deploy-container/rclone-tasks.json /tmp/rclone-tasks.json
 RUN sudo chown -R coder:coder /home/coder/.local
 
 # You can add custom software and dependencies for your environment below
-# -----------
+SHELL ["/bin/bash", "-c"]
+
+# Install nvm
+RUN touch ~/.bashrc && chmod +x ~/.bashrc
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+RUN . ~/.nvm/nvm.sh && source ~/.bashrc && nvm install node
+
+# Install pnpm
+RUN curl -fsSL https://get.pnpm.io/install.sh | sh -
 
 # Install a VS Code extension:
 # Note: we use a different marketplace than VS Code. See https://github.com/cdr/code-server/blob/main/docs/FAQ.md#differences-compared-to-vs-code
@@ -29,7 +37,7 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # Install apt packages:
 # RUN sudo apt-get install -y ubuntu-make
 
-# Copy files: 
+# Copy files:
 # COPY deploy-container/myTool /home/coder/myTool
 
 # -----------
